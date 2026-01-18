@@ -94,9 +94,13 @@ export default function Home() {
             <SetCounter foundCount={game.foundSets.length} />
             <button
               onClick={game.getHint}
-              className="px-3 py-1 text-xs font-medium text-gray-400 uppercase tracking-widest border border-gray-200 rounded hover:bg-gray-50 hover:text-gray-600 cursor-pointer transition-colors"
+              disabled={game.hintUsed}
+              className={`px-3 py-1 text-xs font-medium uppercase tracking-widest border rounded transition-colors
+                ${game.hintUsed
+                  ? 'text-gray-300 border-gray-100 cursor-not-allowed'
+                  : 'text-gray-400 border-gray-200 hover:bg-gray-50 hover:text-gray-600 cursor-pointer'}`}
             >
-              Hint
+              {game.hintUsed ? 'Hint Used' : 'Hint'}
             </button>
             <Timer seconds={game.timerSeconds} isRunning={game.timerIsRunning} />
           </div>

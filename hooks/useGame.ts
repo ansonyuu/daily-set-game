@@ -134,8 +134,10 @@ export function useGame() {
     });
   }, [timer]);
 
+  const [hintUsed, setHintUsed] = useState(false);
+
   const getHint = useCallback(() => {
-    if (gameState.isComplete) return;
+    if (gameState.isComplete || hintUsed) return;
 
     const availableSets = findAllSets(gameState.board);
     if (availableSets.length > 0) {
@@ -145,8 +147,9 @@ export function useGame() {
         hintCardIds: hintSet.map((card) => card.id),
         selectedCardIds: new Set<number>(), // Clear selection when showing hint
       }));
+      setHintUsed(true);
     }
-  }, [gameState.board, gameState.isComplete]);
+  }, [gameState.board, gameState.isComplete, hintUsed]);
 
   // Count available sets on board (for debugging/hints)
   const availableSetsCount = findAllSets(gameState.board).length;
@@ -159,6 +162,7 @@ export function useGame() {
     hasStarted: gameState.hasStarted,
     lastInvalidSet: gameState.lastInvalidSet,
     hintCardIds: gameState.hintCardIds,
+    hintUsed,
     availableSetsCount,
     selectCard,
     resetGame,
