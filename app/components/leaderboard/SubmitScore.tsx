@@ -29,13 +29,13 @@ export default function SubmitScore({ timeSeconds, onSubmit, onClose }: SubmitSc
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 space-y-6">
+      <div className="bg-white rounded-md shadow-2xl max-w-md w-full p-6 space-y-6">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-purple mb-2">Congratulations!</h2>
           <p className="text-gray-600">You found all 10 sets!</p>
         </div>
 
-        <div className="text-center py-4 bg-gray-50 rounded-lg">
+        <div className="text-center py-4 bg-gray-50 rounded">
           <div className="text-sm text-gray-500 uppercase tracking-wide mb-1">Your Time</div>
           <div className="text-4xl font-mono font-bold text-black">
             {formatTime(timeSeconds)}
@@ -54,7 +54,7 @@ export default function SubmitScore({ timeSeconds, onSubmit, onClose }: SubmitSc
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Your name"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple focus:border-purple outline-none transition-colors"
+                className="w-full px-4 py-3 border border-gray-300 rounded focus:ring-1 focus:ring-purple focus:border-purple outline-none transition-colors"
                 maxLength={20}
                 autoFocus
               />
@@ -63,14 +63,14 @@ export default function SubmitScore({ timeSeconds, onSubmit, onClose }: SubmitSc
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors cursor-pointer"
+                className="flex-1 px-4 py-3 border border-gray-300 rounded text-gray-700 font-medium hover:bg-gray-50 transition-colors cursor-pointer"
               >
                 Skip
               </button>
               <button
                 type="submit"
                 disabled={!username.trim() || isSubmitting}
-                className="flex-1 px-4 py-3 bg-purple text-white rounded-lg font-medium hover:bg-purple/90 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                className="flex-1 px-4 py-3 bg-purple text-white rounded font-medium hover:bg-purple/90 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
               >
                 {isSubmitting ? 'Submitting...' : 'Submit'}
               </button>
@@ -83,7 +83,7 @@ export default function SubmitScore({ timeSeconds, onSubmit, onClose }: SubmitSc
             </div>
             <button
               onClick={onClose}
-              className="w-full px-4 py-3 bg-purple text-white rounded-lg font-medium hover:bg-purple/90 transition-colors cursor-pointer"
+              className="w-full px-4 py-3 bg-purple text-white rounded font-medium hover:bg-purple/90 transition-colors cursor-pointer"
             >
               View Leaderboard
             </button>

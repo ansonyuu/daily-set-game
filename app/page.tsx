@@ -116,22 +116,20 @@ export default function Home() {
           </div>
 
           {/* Found Sets - sidebar on larger screens */}
-          <div className="w-full lg:w-auto bg-white rounded-xl p-4 shadow-sm overflow-hidden">
+          <div className="w-full lg:w-auto bg-white rounded p-4 shadow-sm overflow-hidden">
             <FoundSets foundSets={game.foundSets} />
           </div>
         </div>
 
-        {/* Leaderboard - only show after game complete */}
-        {game.isComplete && (
-          <div ref={leaderboardRef} className="bg-white rounded-xl p-6 shadow-sm">
-            <h2 className="mb-4">Today&apos;s Leaderboard</h2>
-            <Leaderboard
-              entries={leaderboard.entries}
-              isLoading={leaderboard.isLoading}
-              currentUsername={submittedUsername || undefined}
-            />
-          </div>
-        )}
+        {/* Leaderboard */}
+        <div ref={leaderboardRef} className="bg-white rounded p-6 shadow-sm">
+          <h2 className="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Today&apos;s Leaderboard</h2>
+          <Leaderboard
+            entries={leaderboard.entries}
+            isLoading={leaderboard.isLoading}
+            currentUsername={submittedUsername || undefined}
+          />
+        </div>
       </div>
 
       {/* Submit Score Modal */}
