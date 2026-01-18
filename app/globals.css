@@ -1,26 +1,89 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Meursault";
+  src: url("../fonts/Meursault-Variable.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Untitled Sans";
+  src: url("../fonts/untitled-sans-regular.woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Untitled Sans";
+  src: url("../fonts/untitled-sans-medium.woff2");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Untitled Sans";
+  src: url("../fonts/untitled-sans-bold.woff2");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Untitled Sans";
+  src: url("../fonts/untitled-sans-light.woff2");
+  font-weight: 300;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --purple: #685275;
+  --green: #24DF6F;
+  --grey: #F3F3F3;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-purple: var(--purple);
+  --color-green: var(--green);
+  --color-grey: var(--grey);
+  --font-sans: "Untitled Sans", "SF Pro", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Meursault", Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Untitled Sans", "SF Pro", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 300;
+}
+
+h1, h2, h3 {
+  font-family: "Meursault", Georgia, serif;
+  font-weight: 500;
+}
+
+h1 {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+h2 {
+  font-size: 1.75rem;
+  line-height: 1.1;
+}
+
+h3 {
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+/* Shake animation for invalid sets - subtle version */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+.animate-shake {
+  animation: shake 0.3s ease-in-out;
 }

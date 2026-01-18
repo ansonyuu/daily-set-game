@@ -1,65 +1,147 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useEffect, useRef } from 'react';
+import { useGame } from '@/hooks/useGame';
+import { useLeaderboard } from '@/hooks/useLeaderboard';
+import GameBoard from './components/game/GameBoard';
+import Timer from './components/game/Timer';
+import SetCounter from './components/game/SetCounter';
+import FoundSets from './components/game/FoundSets';
+import Leaderboard from './components/leaderboard/Leaderboard';
+import SubmitScore from './components/leaderboard/SubmitScore';
 
 export default function Home() {
+  const game = useGame();
+  const leaderboard = useLeaderboard();
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [submittedUsername, setSubmittedUsername] = useState<string | null>(null);
+  const [hasShownModal, setHasShownModal] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
+  const leaderboardRef = useRef<HTMLDivElement>(null);
+
+  // Show modal when game completes
+  useEffect(() => {
+    if (game.isComplete && !hasShownModal) {
+      setShowSubmitModal(true);
+      setHasShownModal(true);
+    }
+  }, [game.isComplete, hasShownModal]);
+
+  const handleSubmitScore = async (username: string) => {
+    await leaderboard.submitScore(username, game.timerSeconds);
+    setSubmittedUsername(username);
+  };
+
+  const handleCloseModal = () => {
+    setShowSubmitModal(false);
+    // Scroll to leaderboard after modal closes
+    setTimeout(() => {
+      leaderboardRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
+  // Format today's date nicely
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <main className="min-h-screen py-8 px-4">
+      <div className="max-w-5xl mx-auto space-y-8">
+        {/* Masthead */}
+        <header className="text-center relative">
+          <div className="border-y border-black py-4">
+            <h1 className="text-4xl md:text-5xl tracking-tight">The Daily Set</h1>
+            <p className="text-sm text-gray-500 mt-3">{formattedDate}</p>
+          </div>
+
+          {/* Info icon */}
+          <button
+            onClick={() => setShowHelp(!showHelp)}
+            className="absolute top-4 right-0 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+            aria-label="How to play"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+            </svg>
+          </button>
+
+          {/* Help popover */}
+          {showHelp && (
+            <div className="absolute top-14 right-0 w-72 bg-white rounded-lg shadow-lg border border-gray-100 p-4 text-left z-10">
+              <h3 className="text-xs font-medium text-gray-400 uppercase tracking-widest mb-3">How to Play</h3>
+              <p className="text-sm text-gray-500 leading-relaxed">
+                A <strong className="text-gray-700">Set</strong> consists of 3 cards where each feature (shape, color, number, shading) is either ALL the same OR ALL different across the 3 cards.
+              </p>
+              <p className="text-sm text-gray-500 mt-2 leading-relaxed">
+                Click 3 cards to select them. Valid sets are automatically detected and replaced with new cards.
+              </p>
+              <button
+                onClick={() => setShowHelp(false)}
+                className="mt-4 text-xs font-medium text-purple uppercase tracking-widest hover:underline cursor-pointer"
+              >
+                Got it
+              </button>
+            </div>
+          )}
+
+          {/* Stats integrated into header */}
+          <div className="flex justify-between items-center py-4 border-b border-gray-200">
+            <SetCounter foundCount={game.foundSets.length} />
+            <button
+              onClick={game.getHint}
+              className="px-3 py-1 text-xs font-medium text-gray-400 uppercase tracking-widest border border-gray-200 rounded hover:bg-gray-50 hover:text-gray-600 cursor-pointer transition-colors"
+            >
+              Hint
+            </button>
+            <Timer seconds={game.timerSeconds} isRunning={game.timerIsRunning} />
+          </div>
+        </header>
+
+        {/* Game Board + Found Sets - side by side on larger screens */}
+        <div className="flex flex-col lg:flex-row gap-6 items-start">
+          {/* Game Board */}
+          <div className="flex-1 w-full lg:max-w-xl">
+            <GameBoard
+              board={game.board}
+              selectedCardIds={game.selectedCardIds}
+              invalidCardIds={game.lastInvalidSet}
+              hintCardIds={game.hintCardIds}
+              onCardClick={game.selectCard}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </div>
+
+          {/* Found Sets - sidebar on larger screens */}
+          <div className="w-full lg:w-auto bg-white rounded-xl p-4 shadow-sm overflow-hidden">
+            <FoundSets foundSets={game.foundSets} />
+          </div>
         </div>
-      </main>
-    </div>
+
+        {/* Leaderboard - only show after game complete */}
+        {game.isComplete && (
+          <div ref={leaderboardRef} className="bg-white rounded-xl p-6 shadow-sm">
+            <h2 className="mb-4">Today&apos;s Leaderboard</h2>
+            <Leaderboard
+              entries={leaderboard.entries}
+              isLoading={leaderboard.isLoading}
+              currentUsername={submittedUsername || undefined}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Submit Score Modal */}
+      {showSubmitModal && (
+        <SubmitScore
+          timeSeconds={game.timerSeconds}
+          onSubmit={handleSubmitScore}
+          onClose={handleCloseModal}
+        />
+      )}
+    </main>
   );
 }

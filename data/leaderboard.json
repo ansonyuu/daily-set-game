@@ -1,0 +1,28 @@
+{
+  "2026-01-18": [
+    {
+      "username": "TestPlayer",
+      "timeSeconds": 120,
+      "date": "2026-01-18",
+      "timestamp": 1768763764504
+    },
+    {
+      "username": "anson",
+      "timeSeconds": 23,
+      "date": "2026-01-18",
+      "timestamp": 1768764498139
+    },
+    {
+      "username": "anson test",
+      "timeSeconds": 43,
+      "date": "2026-01-18",
+      "timestamp": 1768764814225
+    },
+    {
+      "username": "anson test 2",
+      "timeSeconds": 119,
+      "date": "2026-01-18",
+      "timestamp": 1768765035396
+    }
+  ]
+}
