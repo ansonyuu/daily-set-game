@@ -44,5 +44,5 @@ export const COLOR_VALUES: Color[] = ['red', 'green', 'purple'];
 export const NUMBERS: NumberCount[] = [1, 2, 3];
 export const SHADINGS: Shading[] = ['solid', 'striped', 'empty'];
 
-export const SETS_TO_WIN = 10;
+export const SETS_TO_WIN = 6;
 export const BOARD_SIZE = 12;

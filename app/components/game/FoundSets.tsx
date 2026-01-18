@@ -1,6 +1,6 @@
 'use client';
 
-import { Card as CardType, COLORS } from '@/lib/game/types';
+import { Card as CardType, COLORS, SETS_TO_WIN } from '@/lib/game/types';
 import CardShape from './CardShape';
 
 interface FoundSetsProps {
@@ -25,10 +25,11 @@ function MiniCard({ card, setIndex }: { card: CardType; setIndex: number }) {
 }
 
 export default function FoundSets({ foundSets }: FoundSetsProps) {
-  // Create array of 10 slots
-  const slots = Array.from({ length: 10 }, (_, i) => foundSets[i] || null);
-  const leftColumn = slots.slice(0, 5);
-  const rightColumn = slots.slice(5, 10);
+  // Create array of slots based on SETS_TO_WIN
+  const slots = Array.from({ length: SETS_TO_WIN }, (_, i) => foundSets[i] || null);
+  const half = Math.ceil(SETS_TO_WIN / 2);
+  const leftColumn = slots.slice(0, half);
+  const rightColumn = slots.slice(half, SETS_TO_WIN);
 
   return (
     <div className="space-y-3">
@@ -36,7 +37,7 @@ export default function FoundSets({ foundSets }: FoundSetsProps) {
         Found Sets
       </h3>
       <div className="grid grid-cols-2 gap-3">
-        {/* Left column (1-5) */}
+        {/* Left column */}
         <div className="space-y-2">
           {leftColumn.map((set, i) => (
             <div key={i} className="flex items-center gap-1">
@@ -53,15 +54,15 @@ export default function FoundSets({ foundSets }: FoundSetsProps) {
             </div>
           ))}
         </div>
-        {/* Right column (6-10) */}
+        {/* Right column */}
         <div className="space-y-2">
           {rightColumn.map((set, i) => (
-            <div key={i + 5} className="flex items-center gap-1">
-              <span className="text-xs text-gray-300 w-5 shrink-0">{i + 6}.</span>
+            <div key={i + half} className="flex items-center gap-1">
+              <span className="text-xs text-gray-300 w-4 shrink-0">{i + half + 1}.</span>
               {set ? (
                 <div className="flex gap-0.5 p-1 bg-gray-50 rounded border border-gray-100">
                   {set.map((card) => (
-                    <MiniCard key={card.id} card={card} setIndex={i + 5} />
+                    <MiniCard key={card.id} card={card} setIndex={i + half} />
                   ))}
                 </div>
               ) : (

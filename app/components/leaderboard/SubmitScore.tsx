@@ -32,7 +32,7 @@ export default function SubmitScore({ timeSeconds, onSubmit, onClose }: SubmitSc
       <div className="bg-white rounded-md shadow-2xl max-w-md w-full p-6 space-y-6">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-purple mb-2">Congratulations!</h2>
-          <p className="text-gray-600">You found all 10 sets!</p>
+          <p className="text-gray-600">You found all 6 sets!</p>
         </div>
 
         <div className="text-center py-4 bg-gray-50 rounded">
