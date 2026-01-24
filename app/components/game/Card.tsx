@@ -30,6 +30,7 @@ export default function Card({ card, isSelected, isInvalid, isHint, onClick }: C
         border-2 transition-all duration-150
         flex flex-col items-center justify-center gap-1 p-3
         hover:shadow-md cursor-pointer
+        min-h-[100px] md:min-h-0
         ${isSelected && !isInvalid && !isHint ? 'border-purple ring-1 ring-purple ring-opacity-50 shadow-lg' : ''}
         ${isHint ? 'border-green ring-1 ring-green ring-opacity-50 shadow-lg bg-green/5' : ''}
         ${isInvalid ? 'border-red-500 ring-1 ring-red-500 ring-opacity-50 animate-shake' : ''}
